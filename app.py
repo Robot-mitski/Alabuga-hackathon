@@ -26,9 +26,13 @@ def registration():
         print(data, type(data), data['name'])
         if (data["action"] != "registration"): return jsonify(status="error", message="wrong action")
         if (data["email"] == "" or data["pass"] == ""): return jsonify(status="error", message="empty data")
-
+        if not re.match('/^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu', data["email"]): return jsonify(status="error", message="invalid mail format")
+        user = Customer(email=data["email"], password=generate_password_hash(data["pass"], "scrypt", salt_length=32), regDate=datetime.now(datetime.UTC))
+        db.session.add(user)
+        db.session.commit()
         return jsonify(status="ok")
     except Exception as ex:
+        db.session.rollback()
         print(f"Registration error: {ex}")
         return jsonify(status="error", message="Неизвестная ошибка")
 
