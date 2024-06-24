@@ -5,7 +5,17 @@
     <title>Home</title>
 </head>
 <body>
-    <script type="text/javascript" src="{{url_for('static', filename='js/Communicator.js')}}"></script>
-    Here we have some design and other interesting things
+    <script type="module" src="{{url_for('static', filename='js/Communicator.js')}}"></script>
+    <script type="module" src="{{url_for('static', filename='js/main.js')}}"></script>
+    <form id="regForm" class="Form" method="post" onsubmit="">
+        <legend class="FormLabel">Регистрация</legend>
+        <label name="emailLabel">E-mail:</label><br/>
+        <input class="textField" type="email" name="regEmailField" placeholder="example@mail.ru"></input><br/><br/>
+        <label name="passLabel">Пароль:</label><br/>
+        <input class="passField textField" type="password" name="regPassField" placeholder="пароль"></input><button type="button" class="show-hideButton" onclick="RegisterForm.hideButtonEvent(this); return false;"></button><br/>
+        <div id="regError" class="FormError" style="color:red; font-size: 10px"></div><br/>
+        <button id="forgotPasswordButton">Забыли пароль?</button>
+        <input class="Submit" id="regSubmit" type="submit" name="regSubmit" value="зарегистрироваться"></input>
+    </form>
 </body>
 </html>
