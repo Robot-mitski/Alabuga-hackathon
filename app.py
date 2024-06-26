@@ -34,7 +34,7 @@ def post_smth():
     
 @app.route("/registration", methods=["POST", "GET"])
 def registration():
-    # try:
+    try:
         data = dict(json.loads(request.data.decode("utf-8")))
         print(data, type(data), data['email'])
         if (data["action"] != "registration"): return jsonify(status="error", message="wrong action")
@@ -44,10 +44,10 @@ def registration():
         db.session.add(user)
         db.session.commit()
         return jsonify(status="ok", message="Регистрация завершена")
-    # except Exception as ex:
-    #     db.session.rollback()
-    #     print(f"Registration error: {ex}")
-    #     return jsonify(status="error", message="Неизвестная ошибка")
+    except Exception as ex:
+        db.session.rollback()
+        print(f"Registration error: {ex}")
+        return jsonify(status="error", message="Неизвестная ошибка")
 
 class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
