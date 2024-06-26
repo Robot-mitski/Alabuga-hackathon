@@ -1,7 +1,7 @@
 import { Communicator } from './Communicator.js';
 import { RegFormListener } from './RegFormListener.js';
 
-class Main {
+class Registration {
     CommunicatorInstance;
     RegFormListenerInstance;
 
@@ -13,4 +13,4 @@ class Main {
     }
 }
 
-Main.main();
+Registration.main();

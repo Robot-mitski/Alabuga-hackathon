@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request, redirect, url_for
-from flask_login import LoginManager, login_required, login_user, UserMixin, AnonymousUserMixin, current_user
+from flask_login import LoginManager, login_required, login_user, UserMixin, AnonymousUserMixin, current_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 import json
 from flask_sqlalchemy import SQLAlchemy
@@ -87,6 +87,11 @@ def get_prev_model_inputs(email):
                 "model_answer": record.modelAnswer
                 }
     return prev_model_input
+
+@app.route("/logout", methods=["POST", "GET"])
+def logout():
+    logout_user()
+    return redirect(url_for("home"))
 
 @lm.user_loader
 def load_user(user_id):

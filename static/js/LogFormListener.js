@@ -22,6 +22,7 @@ export class LogFormListener {
             "email": email,
             "pass": pass
         }).then((json)=> {return json});
+        console.log("smth");
         var resp = JSON.parse(JSON.stringify(resp));
         if (resp.status !== "ok") {
             error.innerHTML = resp.message;
