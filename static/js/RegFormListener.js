@@ -5,7 +5,6 @@ export class RegFormListener {
     }
 
     async OnSubmit(event){
-        console.log(this);
         event.preventDefault();
         var form = document.getElementById("regForm");
 		var error = document.getElementById("regError");
@@ -19,13 +18,16 @@ export class RegFormListener {
             error.innerHTML = "Неверный формат почтового адреса";
             return false; }
         var resp = await this.#CommunicatorInstance.SendResponse("registration", {
-            action: "registration",
-            email: email,
-            pass: pass
+            "action": "registration",
+            "email": email,
+            "pass": pass
         }).then((json)=> {return json});
-        console.log(resp);
-        if (resp.status !== "ok") 
+        var resp = JSON.parse(JSON.stringify(resp));
+        if (resp.status !== "ok") {
+            error.innerHTML = resp.message;
             return false;
+        }
+        window.location.href = "http://127.0.0.1:5000/user"
         return true;
     }
 }

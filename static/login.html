@@ -1,0 +1,20 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <script type="module" src="{{url_for('static', filename='js/main.js')}}"></script>
+    <form id="logForm" class="Form" method="post" onsubmit="">
+        <legend class="FormLabel">Вход</legend>
+        <label name="emailLabel">E-mail:</label><br/>
+        <input class="textField" type="email" name="logEmailField" placeholder="example@mail.ru"></input><br/><br/>
+        <label name="passLabel">Пароль:</label><br/>
+        <input class="passField textField" type="password" name="logPassField" placeholder="пароль"></input><button type="button" class="show-hideButton"></button><br/>
+        <div id="logError" class="FormError" style="color:red; font-size: 10px"></div><br/>
+        <button id="forgotPasswordButton">Забыли пароль?</button>
+        <input class="Submit" id="logSubmit" type="submit" name="logSubmit" value="Войти"></input>
+    </form>
+</body>
+</html>
