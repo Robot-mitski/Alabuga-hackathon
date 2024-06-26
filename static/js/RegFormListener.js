@@ -1,10 +1,11 @@
 export class RegFormListener {
     #CommunicatorInstance;
-    constructor(CommunicatorInstance){
-        this.#CommunicatorInstance = CommunicatorInstance;
+    constructor(Instance){
+        this.#CommunicatorInstance = Instance;
     }
 
-    OnSubmit(){
+    async OnSubmit(event){
+        console.log(this);
         event.preventDefault();
         var form = document.getElementById("regForm");
 		var error = document.getElementById("regError");
@@ -17,11 +18,14 @@ export class RegFormListener {
         if (!EMAIL_RE.test(email)){
             error.innerHTML = "Неверный формат почтового адреса";
             return false; }
-        this.#CommunicatorInstance.SendResponse("", {
+        var resp = await this.#CommunicatorInstance.SendResponse("registration", {
             action: "registration",
             email: email,
             pass: pass
-        })
+        }).then((json)=> {return json});
+        console.log(resp);
+        if (resp.status !== "ok") 
+            return false;
         return true;
     }
 }
