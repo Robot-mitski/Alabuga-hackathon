@@ -18,7 +18,6 @@ export class RegFormListener {
             error.innerHTML = "Неверный формат почтового адреса";
             return false; }
         var resp = await this.#CommunicatorInstance.SendResponse("registration", {
-            "action": "registration",
             "email": email,
             "pass": pass
         }).then((json)=> {return json});

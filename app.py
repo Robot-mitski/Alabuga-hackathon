@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from email_validator import validate_email, EmailNotValidError
 from sqlalchemy import event
+import joblib
 
 app = Flask(__name__, template_folder="static")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///customers.db"
@@ -16,6 +17,8 @@ app.config["SESSION_TYPE"] = "filesystem"
 db = SQLAlchemy(app)
 lm = LoginManager()
 lm.init_app(app)
+
+model = joblib.load("model/model.pkl")
 
 with app.app_context():
     @event.listens_for(db.engine, "connect")
@@ -31,15 +34,25 @@ def home():
 @app.route("/user", methods=["GET", "POST"])
 @login_required
 def user_page():
-    print(current_user.email)
-    return render_template("smth.html")
+    try:
+        print(current_user.email)
+        data = request.get_json(silent=True)
+        if not data or "url" not in data.keys(): 
+            print(data)
+            return render_template("model.html")
+        if (data["url"] == ""): return jsonify(status="error", message="Заполните все данные")
+        inp = [list(map(float, data["url"].split()))]
+        return jsonify(status="ok", output=f"{model.predict(inp)}")
+    except Exception as ex:
+        db.session.rollback()
+        print(f"Login error: {ex}")
+        return render_template("error.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     try:
         data = request.get_json(silent=True)
-        if not data or "email" not in data.keys() or "action" not in data.keys() or "pass" not in data.keys(): return render_template("login.html")
-        if (data["action"] != "login"): return jsonify(status="error", message="wrong action")
+        if not data or "email" not in data.keys() or "pass" not in data.keys(): return render_template("login.html")
         if (data["email"] == "" or data["pass"] == ""): return jsonify(status="error", message="Заполните все данные")
         user = Customer.query.filter_by(email=data["email"]).first()
         if (not user): return jsonify(status="error", message="Неправильная почта или пароль")
@@ -55,12 +68,11 @@ def login():
 def registration():
     try:
         data = request.get_json(silent=True)
-        if not data or "email" not in data.keys() or "action" not in data.keys() or "pass" not in data.keys(): return render_template("registration.html")
-        if (data["action"] != "registration"): return jsonify(status="error", message="wrong action")
+        if not data or "email" not in data.keys() or "pass" not in data.keys(): return render_template("registration.html")
         if (data["email"] == "" or data["pass"] == ""): return jsonify(status="error", message="Заполните все данные")
         valid = validate_email(data['email'])
         if (Customer.query.filter_by(email=data["email"]).first()): return jsonify(status="error", message="Пользователь с такой почтой уже существует")
-        user = Customer(email=data["email"], password=generate_password_hash(data["pass"], "scrypt", salt_length=32), regDate=datetime.utcnow())
+        user = Customer(email=data["email"], password=generate_password_hash(data["pass"], "bcrypt:sha256", salt_length=32), regDate=datetime.utcnow())
         db.session.add(user)
         db.session.commit()  
         login_user(user)

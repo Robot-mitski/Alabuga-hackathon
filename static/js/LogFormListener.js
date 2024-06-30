@@ -18,7 +18,6 @@ export class LogFormListener {
             error.innerHTML = "Неверный формат почтового адреса";
             return false; }
         var resp = await this.#CommunicatorInstance.SendResponse("login", {
-            "action": "login",
             "email": email,
             "pass": pass
         }).then((json)=> {return json});
