@@ -37,7 +37,7 @@ def registration():
         if (data["email"] == "" or data["pass"] == ""): return jsonify(status="error", message="Заполните все данные")
         valid = validate_email(data['email'])
         if (Customer.query.filter_by(email=data["email"]).first()): return jsonify(status="error", message="Пользователь с такой почтой уже существует")
-        user = Customer(email=data["email"], password=generate_password_hash(data["pass"], "bcrypt:sha256", salt_length=32), regDate=datetime.utcnow())
+        user = Customer(email=data["email"], password=generate_password_hash(data["pass"], "pbkdf2:sha512", salt_length=32), regDate=datetime.utcnow())
         db.session.add(user)
         db.session.commit()  
         login_user(user)
@@ -52,20 +52,8 @@ def registration():
 @module.route("/logout", methods=["POST", "GET"])
 def logout():
     logout_user()
-    return redirect(url_for("home"))
+    return redirect(url_for("general.home"))
 
 @lm.user_loader
 def load_user(user_id):
     return Customer.query.get(user_id)
-
-def get_prev_model_inputs(email):
-    prev_model_input = {}
-    user = Customer.query.filter_by(email=email).first()
-    if not user: return {}
-    for record in user.prevModelData:
-            prev_model_input[record.id] = {
-                "input": record.modelInput,
-                "record_date": record.regDate,
-                "model_answer": record.modelAnswer
-                }
-    return prev_model_input

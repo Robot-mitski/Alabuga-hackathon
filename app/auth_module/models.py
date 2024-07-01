@@ -13,6 +13,7 @@ class PrevModelInput(db.Model):
   id = db.Column(db.Integer, nullable=False, primary_key=True)
   modelInput = db.Column(db.String(1024), default="")
   modelAnswer = db.Column(db.String(1024), default="")
+  modelText = db.Column(db.String(2048), default="")
   recordDate = db.Column(db.DateTime)
   userId = db.Column(db.Integer, db.ForeignKey('customer.id', ondelete="CASCADE"))
 

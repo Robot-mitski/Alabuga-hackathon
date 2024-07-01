@@ -8,10 +8,6 @@ def create_app():
     with open("secret_key.txt") as file:
         app.config["SECRET_KEY"] = file.readline()
     app.config["SESSION_TYPE"] = "filesystem"
-
-    db.init_app(app)
-    with app.app_context():
-        db.create_all()
     import app.auth_module.authentification as auth_module
     import app.general.routes as general_module
     
@@ -19,5 +15,10 @@ def create_app():
     app.register_blueprint(auth_module.module)
 
     from .login_manager import lm
+    from app.general.routes import cache
     lm.init_app(app)
+    cache.init_app(app, config={'CACHE_TYPE': 'SimpleCache'})
+    db.init_app(app)
+    with app.app_context():
+        db.create_all()
     return app

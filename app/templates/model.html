@@ -12,5 +12,10 @@
         <input class="Submit" id="modelSubmit" type="submit" name="modelSubmit" value="отправить"></input>
         <div id="modelOutput"></div>
     </form>
+    <div id="history">
+        {% for record in records %}
+            <div class="record">{{ record['record_date'] }} {{ record["input"] }} {{ record["text"] }} {{ record["model_answer"] }}</div>
+        {% endfor %}
+    </div>
 </body>
 </html>
