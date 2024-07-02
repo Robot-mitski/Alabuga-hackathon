@@ -1,0 +1,222 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пользователь</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet"> 
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            outline: 0;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        section {
+            background-color: #3180F4;
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        nav {
+            background-color: #fff;
+            padding: 15px 30px;
+            border-radius: 5px;
+            display: flex;
+            gap: 30px;
+            box-shadow: 0 2px 10px 0 rgba(255, 255, 255, 0.3);
+            transition: 0.3s all ease-in-out;
+            display:flex;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-size: 18px;
+            color: #292929;
+            transition: 0.3s all ease-in-out;
+        }   
+
+        nav:hover a {
+            color: rgb(165, 165, 165);
+        }
+
+        ul#bgAnimation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        ul#bgAnimation li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.4);
+            bottom: -200px;
+            animation: bgAni 15s infinite linear;
+        }
+
+        ul#bgAnimation li:nth-child(1) {
+            width: 20px;
+            height: 20px;
+            left: 95%;
+            animation-delay: 12s;
+        }
+
+        ul#bgAnimation li:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            left: 25%;
+            animation-delay: 0s;
+        }
+
+        ul#bgAnimation li:nth-child(3) {
+            width: 70px;
+            height: 70px;
+            left: 75%;
+            animation-delay: 10s;
+        }
+
+        ul#bgAnimation li:nth-child(4) {
+            width: 30px;
+            height: 30px;
+            left: 10%;
+            animation-delay: 4s;
+        }
+
+        ul#bgAnimation li:nth-child(5) {
+            width: 40px;
+            height: 40px;
+            left: 84%;
+            animation-delay: 1s;
+        }
+
+        ul#bgAnimation li:nth-child(6) {
+            width: 50px;
+            height: 50px;
+            left: 50%;
+            animation-delay: 15s;
+        }
+
+        ul#bgAnimation li:nth-child(7) {
+            width: 100px;
+            height: 100px;
+            left: 40%;
+            animation-delay: 6s;
+        }
+
+        ul#bgAnimation li:nth-child(8) {
+            width: 60px;
+            height: 60px;
+            left: 85%;
+            animation-delay: 17s;
+        }   
+
+        @keyframes bgAni {
+            from {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 0;
+            }
+
+            to {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 80%;
+            }
+        }
+
+        form {
+            width: 350px;
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+
+        legend{-webkit-text-fill-color: #fff;}
+
+        input[type=text] {
+            padding: 10px 10px;
+            border: solid 1px #fff;
+            margin: 10px 0;
+            width: calc(90% - 22px);
+            text-align: center;
+            font-size: 16px;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            color: #292929;
+            transition: 0.3s all ease-in-out;
+        }
+
+        input[type=text]::placeholder {
+            color: #fff;
+            transition: 0.3s all ease-in-out;
+        }
+
+        input[type=text]:focus::placeholder {
+            color: #393939;
+        }
+
+        input[type=text]:focus {
+            width: calc(100% - 22px);
+            background-color: rgba(255,255,255,0.9);
+        }
+
+        button[type=submit] {
+            width: 90%;
+            border:none;
+            font-size: 16px;
+            border-radius: 2px;
+            color: #292929;
+            cursor: pointer;
+            padding: 10px 0;
+            transition: 0.3s all ease-in-out;
+            margin-top: 10px;
+        }
+
+        button[type=submit]:hover {
+            width: 100%;
+        }
+    </style>
+    <nav>
+        <img src="http://127.0.0.1:5000/static/images/alabuga_icon.png" height="60"class="mw-100 dark" srcset="" width="60">
+        <a id="withoutAuth" href="">Модель</a>
+    </nav>
+</head>
+<body>
+    <script type="module" src="{{url_for('static', filename='js/user_page.js')}}"></script>
+    <section>
+        <ul id="bgAnimation">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <form id="modelForm" class="Form" method="post" onsubmit="">    
+            <input class="textField" type="text" name="modelInput" placeholder="ссылка"></input>
+            <div id="modelError" class="FormError" style="color:red; font-size: 10px"></div>
+            <button id="modelSubmit" type="submit" name="modelSubmit">Отправить</button><br/><br/>
+            <div id="modelOutput">
+                
+            </div><br/>
+            <div class="history">
+
+            </div>
+        </form>
+    </section>
+</body>
+</html>

@@ -13,7 +13,7 @@ export class ModelInputListener {
         if (input === ""){
             error.innerHTML = "Заполните все поля";
             return false; }
-        var resp = await this.#CommunicatorInstance.SendResponse("user", {
+        var resp = await this.#CommunicatorInstance.SendResponse(event.currentTarget.page, {
             "url": input
         }).then((json)=> {return json});
         var resp = JSON.parse(JSON.stringify(resp));

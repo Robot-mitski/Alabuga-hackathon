@@ -1,3 +1,4 @@
-import joblib
+from model.model import SAModel
+import os
 
-model = joblib.load("model/model.pkl")
+model = SAModel(r"C:\Users\gowor\OneDrive\Документы\Alabuga-hackathon\model\bert3")
