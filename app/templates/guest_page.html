@@ -187,6 +187,52 @@
         button[type=submit]:hover {
             width: 100%;
         }
+        .scroll-table-body {
+            height: 100px;
+            overflow-x: auto;
+            margin-top: 0px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .scroll-table table {
+            width:100%;
+            table-layout: fixed;
+            border: none;
+            background-color: white;
+        }
+        .scroll-table thead th {
+            font-weight: bold;
+            text-align: left;
+            border: none;
+            padding: 10px 15px;
+            background: #d8d8d8;
+            font-size: 14px;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+        .scroll-table tbody td {
+            text-align: left;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            padding: 10px 15px;
+            font-size: 14px;
+            vertical-align: top;
+        }
+        .scroll-table tbody tr:nth-child(even){
+            background: #f3f3f3;
+        }
+        
+        /* Стили для скролла */
+        ::-webkit-scrollbar {
+            width: 6px;
+        } 
+        ::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+        } 
+        ::-webkit-scrollbar-thumb {
+            box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+        }
+
     </style>
     <nav>
         <img src="http://127.0.0.1:5000/static/images/alabuga_icon.png" height="60"class="mw-100 dark" srcset="" width="60">
@@ -210,8 +256,7 @@
             <input class="textField" type="text" name="modelInput" placeholder="ссылка"></input>
             <div id="modelError" class="FormError" style="color:red; font-size: 10px"></div>
             <button id="modelSubmit" type="submit" name="modelSubmit">Отправить</button><br/><br/>
-            <div id="modelOutput">
-                
+            <div id="modelOutput" class="scroll-table">
             </div><br/>
             <div class="warning">Для получения доступа к истории запросов, вам нужно <a href="http://127.0.0.1:5000/login">войти в свой аккаунт</a>.</div>
         </form>

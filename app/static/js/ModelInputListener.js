@@ -9,7 +9,7 @@ export class ModelInputListener {
         var form = document.getElementById("modelForm");
 		var error = document.getElementById("modelError");
         var input = form.modelInput.value;
-        var output = document.getElementById("modelOutput");
+        var output = document.getElementsByClassName("scroll-table")[0];
         if (input === ""){
             error.innerHTML = "Заполните все поля";
             return false; }
@@ -21,7 +21,29 @@ export class ModelInputListener {
             error.innerHTML = resp.message;
             return false;
         }
-        output.innerHTML = resp.output;
+        var trs = "";
+        var comps = resp.output.companies;
+        for (var i = 0; i < comps.length; i++){
+            var color = "black";
+            if (comps[i].estimate === "POSITIVE") { color = "lime"; }
+            else if (comps[i].estimate === "NEGATIVE") { color = "red"; }
+            trs += `<tr><th>${comps[i].name}</th><th style="color: ${color}">${comps[i].estimate}</th></tr>`;
+        }
+        output.innerHTML = `<table>
+                    <thead>
+                        <tr>
+                            <th style="text-align: center;">Организация</th>
+                            <th style="text-align: center;">Отношение к ней</th>
+                        </tr>
+                    </thead>
+                </table>	
+                <div class="scroll-table-body">
+                    <table>
+                        <tbody>
+                            ${trs}
+                        </tbody>
+                    </table>
+                </div>`;
         return true;
     }
 }

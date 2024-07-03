@@ -20,6 +20,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
         }
 
         nav {
@@ -187,6 +188,60 @@
         button[type=submit]:hover {
             width: 100%;
         }
+
+        .scroll-table-body {
+            height: 100px;
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: scroll;
+            margin-top: 0px;
+            margin-bottom: 20px;
+        }
+        .scroll-table table {
+            width:100%;
+            table-layout: fixed;
+            border: none;
+            background-color: white;
+            table-layout:fixed;
+        }
+        .scroll-table thead th {
+            font-weight: bold;
+            text-align: left;
+            border: none;
+            padding: 10px 15px;
+            background: #d8d8d8;
+            font-size: 14px;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+        .scroll-table tbody td {
+            text-align: left;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            padding: 10px 15px;
+            font-size: 14px;
+            vertical-align: top;
+        }
+        .scroll-table tbody tr:nth-child(even){
+            background: #f3f3f3;
+        }
+        
+        /* Стили для скролла */
+        ::-webkit-scrollbar {
+            width: 6px;
+        } 
+        ::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+        } 
+        ::-webkit-scrollbar-thumb {
+            box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+        }
+
+        #prevInputTable {
+            float: left;
+            margin-top: 10px;
+            width:100%;
+        }
     </style>
     <nav>
         <img src="http://127.0.0.1:5000/static/images/alabuga_icon.png" height="60"class="mw-100 dark" srcset="" width="60">
@@ -195,6 +250,14 @@
 </head>
 <body>
     <script type="module" src="{{url_for('static', filename='js/user_page.js')}}"></script>
+    <script type="text/javascript">
+        function build_table(out) {
+            table=document.getElementById("modelOutput").getElementsByTagName("tbody");
+            for(var i = 0; i < out.length; i++){
+                table.innerHTML += `<tr>${out[i].name}</tr><tr>${out[i].estimate}</tr>`;
+            }
+        }
+    </script>
     <section>
         <ul id="bgAnimation">
             <li></li>
@@ -210,13 +273,29 @@
             <input class="textField" type="text" name="modelInput" placeholder="ссылка"></input>
             <div id="modelError" class="FormError" style="color:red; font-size: 10px"></div>
             <button id="modelSubmit" type="submit" name="modelSubmit">Отправить</button><br/><br/>
-            <div id="modelOutput">
-                
-            </div><br/>
-            <div class="history">
-
+            <div class="scroll-table">
             </div>
-        </form>
+        </form><br/>      
+        <h2>Предыдущие запросы</h2>
+        <div class="scroll-table" id="prevInputTable">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align: center;">Дата</th>
+                        <th style="text-align: center;">Входные данные</th>
+                        <th style="text-align: center;">Текст</th>
+                        <th style="text-align: center;">Вывод модели</th>
+                    </tr>
+                </thead>
+            </table>	
+            <div class="scroll-table-body">
+                <table>
+                    <tbody>
+                        {{ records|safe }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </section>
 </body>
 </html>
