@@ -13,4 +13,13 @@ def parse_text(url: str):
     txt.lstrip()
     return txt
 
+def parse_urls_txts(req):
+    resp = requests.get(f"https://m.lenta.ru/search?query={req}#size=10%7Csort=2%7Cdomain=1%7Cmodified,format=yyyy-MM-dd")
+    soup = BeautifulSoup(resp.content, "html.parser")
+    search = soup.find_all(class_="card-search")[:10]
+    txts = []
+    for i in search:
+        txts.append(parse_text("https://m.lenta.ru/"+i["href"]))
+    return txts
+
     
